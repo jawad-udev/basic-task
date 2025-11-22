@@ -897,28 +897,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7219083147800537840, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
   m_PrefabInstance: {fileID: 7049024337909072926}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1847764193 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7646955715836369377, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-  m_PrefabInstance: {fileID: 7049024337909072926}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
---- !u!114 &1847764196 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2134312966524536227, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-  m_PrefabInstance: {fileID: 7049024337909072926}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04969db44b73b4566937f367de10f7da, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlaySound
 --- !u!1 &1895416157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,6 +1122,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 302072332}
     m_Modifications:
+    - target: {fileID: 290698939001695906, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
+      propertyPath: m_Text
+      value: 4x5
+      objectReference: {fileID: 0}
     - target: {fileID: 2746670133847071729, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -1232,46 +1214,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7646955715836369377, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646955715836369377, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646955715836369377, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1847764196}
-    - target: {fileID: 7646955715836369377, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646955715836369377, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Play
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646955715836369377, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlaySound, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646955715836369377, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Button
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646955715836369377, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 7926152269519037822, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
       propertyPath: m_Name
       value: MainMenuScreen
       objectReference: {fileID: 0}
-    - target: {fileID: 8325866752044916200, guid: c6a3ec6f811334368a2a392e686cd65b, type: 3}
-      propertyPath: playButton
-      value: 
-      objectReference: {fileID: 1847764193}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

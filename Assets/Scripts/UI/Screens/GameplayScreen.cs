@@ -38,7 +38,11 @@ public class GameplayScreen : MonoBehaviour
 
         if (restartButton != null)
         {
-            restartButton.onClick.AddListener(RestartGame);
+            restartButton.onClick.AddListener(Services.GameService.RestartGame);
+        }
+        if (mainMenuButton != null)
+        {
+            mainMenuButton.onClick.AddListener(Services.GameService.LoadMainMenu);
         }
         if (scoreUI != null && scoreManager != null)
         {
@@ -101,26 +105,26 @@ public class GameplayScreen : MonoBehaviour
         Services.AudioService.PlayWinSound();
     }
 
-    private void RestartGame()
-    {
-        // Reset grid layout
-        if (customGridLayout != null)
-        {
-            customGridLayout.SetGridDimensions(gridColumns, gridRows);
-            customGridLayout.SetSpacing(spacingX, spacingY);
-            customGridLayout.SetPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-            customGridLayout.SetCardSize(cardWidth, cardHeight);
-        }
+    // private void RestartGame()
+    // {
+    //     // Reset grid layout
+    //     if (customGridLayout != null)
+    //     {
+    //         customGridLayout.SetGridDimensions(gridColumns, gridRows);
+    //         customGridLayout.SetSpacing(spacingX, spacingY);
+    //         customGridLayout.SetPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+    //         customGridLayout.SetCardSize(cardWidth, cardHeight);
+    //     }
 
-        // Reinitialize grid
-        var (columns, rows) = Services.GameService.GetGridSize();
-        gridManager.InitializeGrid(rows, columns);
+    //     // Reinitialize grid
+    //     var (columns, rows) = Services.GameService.GetGridSize();
+    //     gridManager.InitializeGrid(rows, columns);
 
-        if (gameStatusText != null)
-        {
-            gameStatusText.text = $"Grid: {rows}x{columns}";
-        }
-    }
+    //     if (gameStatusText != null)
+    //     {
+    //         gameStatusText.text = $"Grid: {rows}x{columns}";
+    //     }
+    // }
 
     private void OnDestroy()
     {
@@ -130,7 +134,11 @@ public class GameplayScreen : MonoBehaviour
         }
         if (restartButton != null)
         {
-            restartButton.onClick.RemoveListener(RestartGame);
+            restartButton.onClick.RemoveListener(Services.GameService.RestartGame);
+        }
+        if (mainMenuButton != null)
+        {
+            mainMenuButton.onClick.RemoveListener(Services.GameService.LoadMainMenu);
         }
         if (scoreUI != null && scoreManager != null)
         {
