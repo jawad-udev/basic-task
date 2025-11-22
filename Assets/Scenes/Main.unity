@@ -817,6 +817,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioService
   buttonSound: {fileID: 8300000, guid: b3295a0d0e8654378bdd881fc20926d7, type: 3}
   bgMusic: {fileID: 8300000, guid: 39eecaac10a8443979d3ea9096f95e0b, type: 3}
+  cardMatchSound: {fileID: 8300000, guid: 970a477f09ce045679b8bddcd15cf02b, type: 3}
+  cardMissmatchSound: {fileID: 8300000, guid: ba2cf92a8ae1f4a77848a65e96a8ceff, type: 3}
+  winSound: {fileID: 8300000, guid: c1df81e0c9d324eb38e8fa92ed31dbd0, type: 3}
+  gameoverSound: {fileID: 8300000, guid: 614d7bcdfba6f4badad12978bfa53e81, type: 3}
   musicSource: {fileID: 1895416159}
   soundSource: {fileID: 1183521891}
 --- !u!4 &1202740317

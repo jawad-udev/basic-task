@@ -20,6 +20,11 @@ public class AudioService : MonoBehaviour
 
     [SerializeField] private AudioClip buttonSound;
     [SerializeField] private AudioClip bgMusic;
+    [SerializeField] private AudioClip cardMatchSound;
+    [SerializeField] private AudioClip cardMissmatchSound;
+    [SerializeField] private AudioClip winSound;
+    [SerializeField] private AudioClip gameoverSound;
+
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource soundSource;
     public void PlayButtonSound(SoundType soundType)
@@ -48,5 +53,21 @@ public class AudioService : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(musicType), musicType, null);
         }
+    }
+    public void PlayMatchSound()
+    {
+        soundSource.PlayOneShot(cardMatchSound);
+    }
+    public void PlayMissmatchSound()
+    {
+        soundSource.PlayOneShot(cardMissmatchSound);
+    }
+    public void PlayWinSound()
+    {
+        soundSource.PlayOneShot(winSound);
+    }
+    public void PlayGameOverSound()
+    {
+        soundSource.PlayOneShot(gameoverSound);
     }
 }
