@@ -8,6 +8,9 @@ public class GameplayScreen : MonoBehaviour
     [SerializeField] private CustomGridLayout customGridLayout;
     [SerializeField] private TMP_Text gameStatusText;
     [SerializeField] private Button restartButton;
+    [SerializeField] private Button mainMenuButton;
+    [SerializeField] private ScoreUI scoreUI;
+    [SerializeField] private ScoreManager scoreManager;
 
     // Grid size configuration
     [SerializeField] private int gridRows = 2;
@@ -37,7 +40,12 @@ public class GameplayScreen : MonoBehaviour
         {
             restartButton.onClick.AddListener(RestartGame);
         }
-
+        if (scoreUI != null && scoreManager != null)
+        {
+            Debug.Log("Linking ScoreUI and ScoreManager events");
+            scoreManager.OnScoreChanged += scoreUI.UpdateScoreUI;
+            scoreManager.OnComboChanged += scoreUI.UpdateComboUI;
+        }
         InitializeGame();
     }
 
@@ -90,6 +98,7 @@ public class GameplayScreen : MonoBehaviour
         {
             gameStatusText.text = "You Won!";
         }
+        Services.AudioService.PlayWinSound();
     }
 
     private void RestartGame()
@@ -121,6 +130,11 @@ public class GameplayScreen : MonoBehaviour
         if (restartButton != null)
         {
             restartButton.onClick.RemoveListener(RestartGame);
+        }
+        if (scoreUI != null && scoreManager != null)
+        {
+            scoreManager.OnScoreChanged -= scoreUI.UpdateScoreUI;
+            scoreManager.OnComboChanged -= scoreUI.UpdateComboUI;
         }
     }
 }

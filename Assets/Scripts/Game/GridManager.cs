@@ -8,11 +8,11 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Card cardPrefab;
     [SerializeField] private Sprite cardBackSprite;
     [SerializeField] private List<Sprite> cardFrontSprites;
+    [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private float spacingX = 10f;
     [SerializeField] private float spacingY = 10f;
 
     private CustomGridLayout customGridLayout;
-    private ScoreManager scoreManager;
 
     private int gridRows;
     private int gridColumns;
@@ -76,11 +76,10 @@ public class GridManager : MonoBehaviour
 
         if (scoreManager == null)
         {
-            float containerWidth = containerRect.rect.width;
-            float containerHeight = containerRect.rect.height;
+            scoreManager = FindAnyObjectByType<ScoreManager>();
+        }
 
-            float cellWidth = containerWidth / gridColumns - gridLayoutGroup.spacing.x;
-            float cellHeight = containerHeight / gridRows - gridLayoutGroup.spacing.y;
+        scoreManager.ResetRound();
 
         // Set grid dimensions and spacing
         customGridLayout.SetGridDimensions(gridColumns, gridRows);
@@ -196,18 +195,38 @@ public class GridManager : MonoBehaviour
             card2.MatchCard();
             matchedPairs++;
 
-            selectedCards.Clear();
-
-            // Check if game is won
-            if (matchedPairs == cards.Count / 2)
+            // Add score and combo for matching
+            if (scoreManager != null)
             {
-                OnGameWon?.Invoke();
-                isComparing = false;
+                scoreManager.AddMatchPoints();
+                Services.UserService.AddMatch();
+                Services.AudioService.PlayMatchSound();
             }
+
+            Debug.Log($"Matched pairs: {matchedPairs}/{cards.Count / 2}");
+
+            // Remove matched cards with delay for visual feedback
+            // Keep isComparing = true until cards are removed
+            Invoke(nameof(RemoveMatchedCards), 0.5f);
+
+            selectedCards.Clear();
         }
         else
         {
-            // No match, flip back after delay
+            Services.AudioService.PlayMissmatchSound();
+            // No match, save these cards for flip back and clear selection for new matches
+            Debug.Log($"NO MATCH - Card1 ID: {card1.CardId} != Card2 ID: {card2.CardId}. Flipping back...");
+
+            // Reset combo on mismatch
+            if (scoreManager != null)
+            {
+                scoreManager.ResetCombo();
+            }
+
+            cardsToFlipBack.Clear();
+            cardsToFlipBack.Add(card1);
+            cardsToFlipBack.Add(card2);
+            selectedCards.Clear();
             Invoke(nameof(FlipBackCards), 1f);
         }
     }
@@ -228,8 +247,22 @@ public class GridManager : MonoBehaviour
         }
         Debug.Log($"Removed {removedCount} matched cards. Remaining cards: {cards.Count}");
 
-        // Process next comparison in queue, or allow new selections
-        ProcessNextComparison();
+        // Check if game is won after removing matched cards
+        if (matchedPairs == 0 || cards.Count == 0)
+        {
+            Debug.Log("GAME WON!");
+            if (scoreManager != null)
+            {
+                scoreManager.FinishGame();
+            }
+            OnGameWon?.Invoke();
+            isComparing = false;
+        }
+        else
+        {
+            // Process next comparison in queue, or allow new selections
+            ProcessNextComparison();
+        }
     }
 
     private void FlipBackCards()
