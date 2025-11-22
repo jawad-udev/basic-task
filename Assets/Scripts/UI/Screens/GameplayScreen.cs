@@ -42,7 +42,6 @@ public class GameplayScreen : MonoBehaviour
         }
         if (scoreUI != null && scoreManager != null)
         {
-            Debug.Log("Linking ScoreUI and ScoreManager events");
             scoreManager.OnScoreChanged += scoreUI.UpdateScoreUI;
             scoreManager.OnComboChanged += scoreUI.UpdateComboUI;
         }
@@ -63,12 +62,13 @@ public class GameplayScreen : MonoBehaviour
         }
 
         // Initialize grid with specified dimensions
-        gridManager.InitializeGrid(gridRows, gridColumns);
+        var (columns, rows) = Services.GameService.GetGridSize();
+        gridManager.InitializeGrid(rows, columns);
         gridManager.OnGameWon += OnGameWon;
 
         if (gameStatusText != null)
         {
-            gameStatusText.text = $"Grid: {gridRows}x{gridColumns}";
+            gameStatusText.text = $"Grid: {rows}x{columns}";
         }
     }
 
@@ -113,11 +113,12 @@ public class GameplayScreen : MonoBehaviour
         }
 
         // Reinitialize grid
-        gridManager.InitializeGrid(gridRows, gridColumns);
+        var (columns, rows) = Services.GameService.GetGridSize();
+        gridManager.InitializeGrid(rows, columns);
 
         if (gameStatusText != null)
         {
-            gameStatusText.text = $"Grid: {gridRows}x{gridColumns}";
+            gameStatusText.text = $"Grid: {rows}x{columns}";
         }
     }
 

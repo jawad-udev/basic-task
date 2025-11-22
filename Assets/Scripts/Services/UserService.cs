@@ -66,12 +66,10 @@ public class UserService : MonoBehaviour
             // Create a dummy user
             CreateDummyUser();
             SaveUserData();
-            Debug.Log("No user data found, creating dummy user profile");
         }
         else
         {
             userData = JsonUtility.FromJson<UserData>(json);
-            Debug.Log("User data loaded successfully");
         }
     }
 
@@ -79,7 +77,6 @@ public class UserService : MonoBehaviour
     {
         userData.profile.username = "Player_" + UnityEngine.Random.Range(1000, 9999);
         userData.profile.email = userData.profile.username + "@cardsGame.local";
-        Debug.Log($"Dummy user created - Username: {userData.profile.username}, Email: {userData.profile.email}");
     }
 
     public void SaveUserData()
@@ -88,7 +85,6 @@ public class UserService : MonoBehaviour
         string json = JsonUtility.ToJson(userData, true);
         PlayerPrefs.SetString(USER_DATA_KEY, json);
         PlayerPrefs.Save();
-        Debug.Log("User data saved to PlayerPrefs");
     }
 
     public void SetUserProfile(string username, string email)
@@ -96,14 +92,12 @@ public class UserService : MonoBehaviour
         userData.profile.username = username;
         userData.profile.email = email;
         SaveUserData();
-        Debug.Log($"User profile set - Username: {username}, Email: {email}");
     }
 
     public void AddScore(int points)
     {
         userData.stats.totalScore += points;
         SaveUserData();
-        Debug.Log($"Score added: {points}. Total score: {userData.stats.totalScore}");
     }
 
     public void UpdateMaxCombo(int currentCombo)
@@ -112,7 +106,6 @@ public class UserService : MonoBehaviour
         {
             userData.stats.maxCombo = currentCombo;
             SaveUserData();
-            Debug.Log($"New max combo: {userData.stats.maxCombo}");
         }
     }
 
@@ -138,7 +131,6 @@ public class UserService : MonoBehaviour
     {
         userData.stats = new GameStats();
         SaveUserData();
-        Debug.Log("Game stats reset");
     }
 
     public void ResetAllUserData()
@@ -146,7 +138,6 @@ public class UserService : MonoBehaviour
         userData = new UserData();
         PlayerPrefs.DeleteKey(USER_DATA_KEY);
         PlayerPrefs.Save();
-        Debug.Log("All user data reset");
     }
 
     public string GetUserDataAsJson()

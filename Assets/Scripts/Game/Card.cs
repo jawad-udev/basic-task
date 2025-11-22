@@ -15,7 +15,6 @@ public class Card : MonoBehaviour
     private int cardId;
     private bool isMatched;
     private bool isFlipped;
-    private Sprite actualCardSprite;
 
     public int CardId => cardId;
     public bool IsMatched => isMatched;
@@ -58,7 +57,6 @@ public class Card : MonoBehaviour
         cardId = id;
         isMatched = false;
         isFlipped = true; // Start as flipped (showing front)
-        actualCardSprite = frontSprite;
         cardBackSprite = backSprite;
         cardFrontSprite = frontSprite;
 
@@ -90,13 +88,10 @@ public class Card : MonoBehaviour
     {
         if (isMatched || isFlipped)
         {
-            Debug.LogWarning($"Cannot flip card - isMatched: {isMatched}, isFlipped: {isFlipped}");
             return;
         }
 
-        Debug.Log($"Flipping card ID: {cardId}");
         isFlipped = true;
-
         cardButton.interactable = false;
 
         // Y-axis rotation animation for flip effect
@@ -108,24 +103,13 @@ public class Card : MonoBehaviour
                 {
                     frontImageObject.SetActive(true);
                     frontImage.sprite = cardFrontSprite;
-                    Debug.Log($"Card {cardId} sprite changed to front");
                 }
 
                 transform.DORotate(new Vector3(0, 0, 0), flipDuration / 2)
                     .OnComplete(() =>
                     {
                         cardButton.interactable = true;
-                        Debug.Log($"Card {cardId} animation complete - Invoking OnCardSelected");
-                        // Invoke card selection callback
-                        if (OnCardSelected != null)
-                        {
-                            Debug.Log($"OnCardSelected callback is assigned, invoking for card {cardId}");
-                            OnCardSelected.Invoke(this);
-                        }
-                        else
-                        {
-                            Debug.LogError($"OnCardSelected callback is NULL for card {cardId}!");
-                        }
+                        OnCardSelected?.Invoke(this);
                     });
             });
     }
@@ -136,8 +120,6 @@ public class Card : MonoBehaviour
 
         cardButton.interactable = false;
 
-        Debug.Log($"Flipping back card ID: {cardId}");
-
         transform.DORotate(new Vector3(0, 90, 0), flipDuration / 2)
             .OnComplete(() =>
             {
@@ -145,7 +127,6 @@ public class Card : MonoBehaviour
                 if (frontImageObject != null)
                 {
                     frontImageObject.SetActive(false);
-                    Debug.Log($"Card {cardId} front hidden");
                 }
 
                 transform.DORotate(new Vector3(0, 0, 0), flipDuration / 2)
@@ -153,7 +134,6 @@ public class Card : MonoBehaviour
                     {
                         isFlipped = false; // Set to false after animation completes
                         cardButton.interactable = true;
-                        Debug.Log($"Card {cardId} flipped back complete - isFlipped set to false");
                     });
             });
     }
@@ -162,8 +142,6 @@ public class Card : MonoBehaviour
     {
         isMatched = true;
         cardButton.interactable = false;
-
-        Debug.Log($"Card {cardId} matched!");
 
         // Add a fade out animation on match
         if (frontImage != null)
@@ -186,14 +164,9 @@ public class Card : MonoBehaviour
 
     private void OnClick()
     {
-        Debug.Log($"OnClick called for card {cardId} - isFlipped: {isFlipped}, isMatched: {isMatched}");
         if (!isFlipped && !isMatched)
         {
             FlipCard();
-        }
-        else
-        {
-            Debug.LogWarning($"Click rejected for card {cardId} - isFlipped: {isFlipped}, isMatched: {isMatched}");
         }
     }
 }

@@ -127,7 +127,6 @@ public class GridManager : MonoBehaviour
         for (int i = 0; i < cards.Count; i++)
         {
             cards[i].transform.SetSiblingIndex(i);
-            Debug.Log($"Card {cards[i].CardId} moved to position {i}");
         }
     }
 
@@ -136,24 +135,20 @@ public class GridManager : MonoBehaviour
         // Prevent selecting matched cards
         if (selectedCard.IsMatched)
         {
-            Debug.LogWarning($"Card {selectedCard.CardId} already matched, cannot select");
             return;
         }
 
         // Prevent adding the same card twice to the selection
         if (selectedCards.Contains(selectedCard))
         {
-            Debug.LogWarning($"Card {selectedCard.CardId} already in selection, ignoring duplicate click");
             return;
         }
 
         selectedCards.Add(selectedCard);
-        Debug.Log($"Card selected: ID={selectedCard.CardId}, Total selected: {selectedCards.Count}");
 
         // Once 2 cards are selected, queue for comparison
         if (selectedCards.Count == 2)
         {
-            Debug.Log($"Two cards selected - Card1 ID: {selectedCards[0].CardId}, Card2 ID: {selectedCards[1].CardId}");
             // Queue this pair for comparison
             List<Card> pairToCompare = new List<Card>(selectedCards);
             comparisonQueue.Enqueue(pairToCompare);
@@ -185,12 +180,9 @@ public class GridManager : MonoBehaviour
         Card card1 = selectedCards[0];
         Card card2 = selectedCards[1];
 
-        Debug.Log($"Checking match - Card1 ID: {card1.CardId}, Card2 ID: {card2.CardId}");
-
         if (card1.CardId == card2.CardId)
         {
             // Match found
-            Debug.Log($"MATCH FOUND! Cards with ID {card1.CardId} matched!");
             card1.MatchCard();
             card2.MatchCard();
             matchedPairs++;
@@ -203,8 +195,6 @@ public class GridManager : MonoBehaviour
                 Services.AudioService.PlayMatchSound();
             }
 
-            Debug.Log($"Matched pairs: {matchedPairs}/{cards.Count / 2}");
-
             // Remove matched cards with delay for visual feedback
             // Keep isComparing = true until cards are removed
             Invoke(nameof(RemoveMatchedCards), 0.5f);
@@ -215,7 +205,6 @@ public class GridManager : MonoBehaviour
         {
             Services.AudioService.PlayMissmatchSound();
             // No match, save these cards for flip back and clear selection for new matches
-            Debug.Log($"NO MATCH - Card1 ID: {card1.CardId} != Card2 ID: {card2.CardId}. Flipping back...");
 
             // Reset combo on mismatch
             if (scoreManager != null)
@@ -234,23 +223,18 @@ public class GridManager : MonoBehaviour
     private void RemoveMatchedCards()
     {
         // Remove all matched cards from the grid
-        int removedCount = 0;
         for (int i = cards.Count - 1; i >= 0; i--)
         {
             if (cards[i].IsMatched)
             {
-                Debug.Log($"Removing matched card at index {i}");
                 Destroy(cards[i].gameObject);
                 cards.RemoveAt(i);
-                removedCount++;
             }
         }
-        Debug.Log($"Removed {removedCount} matched cards. Remaining cards: {cards.Count}");
 
         // Check if game is won after removing matched cards
-        if (matchedPairs == 0 || cards.Count == 0)
+        if (cards.Count == 0)
         {
-            Debug.Log("GAME WON!");
             if (scoreManager != null)
             {
                 scoreManager.FinishGame();
@@ -267,20 +251,16 @@ public class GridManager : MonoBehaviour
 
     private void FlipBackCards()
     {
-        Debug.Log($"FlipBackCards called - cardsToFlipBack count: {cardsToFlipBack.Count}");
         if (cardsToFlipBack.Count == 2)
         {
-            Debug.Log($"Flipping back card 1: {cardsToFlipBack[0].CardId} and card 2: {cardsToFlipBack[1].CardId}");
             cardsToFlipBack[0].FlipBack();
             cardsToFlipBack[1].FlipBack();
             cardsToFlipBack.Clear();
-            Debug.Log("Cards flipped back, ready for new selection");
             // Process next comparison in queue
             ProcessNextComparison();
         }
         else
         {
-            Debug.LogWarning($"Cards to flip back count is not 2, it's {cardsToFlipBack.Count}");
             cardsToFlipBack.Clear();
             ProcessNextComparison();
         }
@@ -288,7 +268,6 @@ public class GridManager : MonoBehaviour
 
     private void ResetAllCardsToBack()
     {
-        Debug.Log("Resetting all cards to back side");
         foreach (Card card in cards)
         {
             card.ResetToBack();

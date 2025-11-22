@@ -28,8 +28,6 @@ public class ScoreManager : MonoBehaviour
 
         currentScore += totalPoints;
 
-        Debug.Log($"Match! Combo: {currentCombo} | Points: {totalPoints} (Base: {basePoints} + Bonus: {comboBonus}) | Total Score: {currentScore}");
-
         OnScoreChanged?.Invoke(currentScore);
         OnComboChanged?.Invoke(currentCombo);
     }
@@ -38,7 +36,6 @@ public class ScoreManager : MonoBehaviour
     {
         if (currentCombo > 0)
         {
-            Debug.Log($"Combo broken! Final combo: {currentCombo}");
             Services.UserService.UpdateMaxCombo(currentCombo);
             currentCombo = 0;
             OnComboChanged?.Invoke(currentCombo);
@@ -50,7 +47,6 @@ public class ScoreManager : MonoBehaviour
         ResetCombo();
         Services.UserService.AddScore(currentScore);
         Services.UserService.IncrementGamesPlayed();
-        Debug.Log($"Game finished! Final score: {currentScore}");
     }
 
     public void ResetRound()

@@ -164,8 +164,6 @@ public class CustomGridLayout : MonoBehaviour
 
                     childRect.anchoredPosition = new Vector2(xPos, yPos);
                     childRect.sizeDelta = cellSize;
-
-                    Debug.Log($"Card {index} positioned at ({xPos}, {yPos}) with size {cellSize}");
                 }
 
                 index++;

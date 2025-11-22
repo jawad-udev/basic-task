@@ -20,4 +20,16 @@ public class GameService : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
+    public void SetGridSize(int sizeX, int sizeY)
+    {
+        PlayerPrefs.SetInt("GridSizeX", sizeX);
+        PlayerPrefs.SetInt("GridSizeY", sizeY);
+    }
+    public (int, int) GetGridSize()
+    {
+        int sizeX = PlayerPrefs.GetInt("GridSizeX", 4); // Default to 4 if not set
+        int sizeY = PlayerPrefs.GetInt("GridSizeY", 4); // Default to 4 if not set
+        return (sizeX, sizeY);
+    }
 }
