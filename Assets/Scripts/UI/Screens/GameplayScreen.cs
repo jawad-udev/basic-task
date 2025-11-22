@@ -4,20 +4,33 @@ using UnityEngine.UI;
 
 public class GameplayScreen : MonoBehaviour
 {
-    [SerializeField] private GridLayoutGroup cardGrid;
     [SerializeField] private GridManager gridManager;
+    [SerializeField] private CustomGridLayout customGridLayout;
     [SerializeField] private TMP_Text gameStatusText;
     [SerializeField] private Button restartButton;
 
     // Grid size configuration
     [SerializeField] private int gridRows = 2;
     [SerializeField] private int gridColumns = 2;
+    [SerializeField] private float spacingX = 10f;
+    [SerializeField] private float spacingY = 10f;
+    [SerializeField] private float paddingLeft = 20f;
+    [SerializeField] private float paddingTop = 20f;
+    [SerializeField] private float paddingRight = 20f;
+    [SerializeField] private float paddingBottom = 20f;
+    [SerializeField] private float cardWidth = 245f;
+    [SerializeField] private float cardHeight = 400f;
 
     private void Start()
     {
         if (gridManager == null)
         {
             gridManager = GetComponent<GridManager>();
+        }
+
+        if (customGridLayout == null && gridManager != null)
+        {
+            customGridLayout = gridManager.GetComponent<CustomGridLayout>();
         }
 
         if (restartButton != null)
@@ -30,6 +43,17 @@ public class GameplayScreen : MonoBehaviour
 
     private void InitializeGame()
     {
+        // Configure custom grid layout
+        if (customGridLayout != null)
+        {
+            customGridLayout.SetGridDimensions(gridColumns, gridRows);
+            customGridLayout.SetSpacing(spacingX, spacingY);
+            customGridLayout.SetPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            customGridLayout.SetCardSize(cardWidth, cardHeight);
+            customGridLayout.SetAutoFitCells(true);
+            customGridLayout.SetMaintainAspectRatio(true);
+        }
+
         // Initialize grid with specified dimensions
         gridManager.InitializeGrid(gridRows, gridColumns);
         gridManager.OnGameWon += OnGameWon;
@@ -44,6 +68,14 @@ public class GameplayScreen : MonoBehaviour
     {
         gridRows = rows;
         gridColumns = columns;
+
+        // Update grid layout
+        if (customGridLayout != null)
+        {
+            customGridLayout.SetGridDimensions(columns, rows);
+        }
+
+        // Initialize new grid
         gridManager.InitializeGrid(rows, columns);
 
         if (gameStatusText != null)
@@ -62,6 +94,16 @@ public class GameplayScreen : MonoBehaviour
 
     private void RestartGame()
     {
+        // Reset grid layout
+        if (customGridLayout != null)
+        {
+            customGridLayout.SetGridDimensions(gridColumns, gridRows);
+            customGridLayout.SetSpacing(spacingX, spacingY);
+            customGridLayout.SetPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            customGridLayout.SetCardSize(cardWidth, cardHeight);
+        }
+
+        // Reinitialize grid
         gridManager.InitializeGrid(gridRows, gridColumns);
 
         if (gameStatusText != null)
