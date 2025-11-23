@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -6,6 +7,11 @@ public class MainMenuScreen : MonoBehaviour
 {
     [SerializeField] private Button playButton;
     [SerializeField] private ToggleGroup gridSizeToggleGroup;
+    [SerializeField] private TMP_Text profileData;
+    [SerializeField] private Button musicToggleButton;
+    [SerializeField] private TMP_Text musicToggleButtonText;
+    [SerializeField] private Button soundToggleButton;
+    [SerializeField] private TMP_Text soundToggleButtonText;
 
     // Grid size presets: (rows, columns)
     private static readonly (int, int)[] GridSizePresets = new[]
@@ -53,6 +59,38 @@ public class MainMenuScreen : MonoBehaviour
                 toggles[0].isOn = true;
             }
         }
+
+        // Set up music and sound toggle buttons
+        if (musicToggleButton != null)
+        {
+            musicToggleButton.onClick.AddListener(OnMusicToggleClicked);
+        }
+
+        if (soundToggleButton != null)
+        {
+            soundToggleButton.onClick.AddListener(OnSoundToggleClicked);
+        }
+
+        // Display player data in profile data text
+        UpdateProfileData();
+        UpdateAudioToggleButtons();
+    }
+
+    private void UpdateProfileData()
+    {
+        if (profileData == null)
+            return;
+
+        UserService userService = Services.UserService;
+        UserProfile profile = userService.Profile;
+        GameStats stats = userService.Stats;
+
+        string profileText = $"Player: {profile.username}\n" +
+                           $"Total Score: {stats.totalScore}\n" +
+                           $"Games Played: {stats.gamesPlayed}\n" +
+                           $"Max Combo: x{stats.maxCombo}";
+
+        profileData.text = profileText;
     }
 
     private void OnGridSizeToggleChanged(int presetIndex)
@@ -69,6 +107,31 @@ public class MainMenuScreen : MonoBehaviour
         Services.GameService.StartGame();
     }
 
+    private void OnMusicToggleClicked()
+    {
+        Services.AudioService.ToggleMusic();
+        UpdateAudioToggleButtons();
+    }
+
+    private void OnSoundToggleClicked()
+    {
+        Services.AudioService.ToggleSound();
+        UpdateAudioToggleButtons();
+    }
+
+    private void UpdateAudioToggleButtons()
+    {
+        if (musicToggleButtonText != null)
+        {
+            musicToggleButtonText.text = Services.AudioService.IsMusicEnabled ? "Music: ON" : "Music: OFF";
+        }
+
+        if (soundToggleButtonText != null)
+        {
+            soundToggleButtonText.text = Services.AudioService.IsSoundEnabled ? "Sound: ON" : "Sound: OFF";
+        }
+    }
+
     private void OnDestroy()
     {
         if (gridSizeToggleGroup != null)
@@ -80,5 +143,13 @@ public class MainMenuScreen : MonoBehaviour
             }
         }
         playButton.onClick.RemoveListener(OnPlayButtonClicked);
+        if (musicToggleButton != null)
+        {
+            musicToggleButton.onClick.RemoveListener(OnMusicToggleClicked);
+        }
+        if (soundToggleButton != null)
+        {
+            soundToggleButton.onClick.RemoveListener(OnSoundToggleClicked);
+        }
     }
 }

@@ -28,6 +28,43 @@ public class AudioService : MonoBehaviour
 
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource soundSource;
+
+    private bool isMusicEnabled = true;
+    private bool isSoundEnabled = true;
+
+    public bool IsMusicEnabled => isMusicEnabled;
+    public bool IsSoundEnabled => isSoundEnabled;
+
+    private void Awake()
+    {
+        LoadAudioPreferences();
+    }
+
+    private void LoadAudioPreferences()
+    {
+        isMusicEnabled = PlayerPrefs.GetInt("MusicEnabled", 1) == 1;
+        isSoundEnabled = PlayerPrefs.GetInt("SoundEnabled", 1) == 1;
+
+        musicSource.mute = !isMusicEnabled;
+        soundSource.mute = !isSoundEnabled;
+    }
+
+    public void ToggleMusic()
+    {
+        isMusicEnabled = !isMusicEnabled;
+        musicSource.mute = !isMusicEnabled;
+        PlayerPrefs.SetInt("MusicEnabled", isMusicEnabled ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void ToggleSound()
+    {
+        isSoundEnabled = !isSoundEnabled;
+        soundSource.mute = !isSoundEnabled;
+        PlayerPrefs.SetInt("SoundEnabled", isSoundEnabled ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
     public void PlayButtonSound(SoundType soundType)
     {
         switch (soundType)

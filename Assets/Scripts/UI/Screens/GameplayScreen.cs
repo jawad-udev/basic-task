@@ -11,6 +11,7 @@ public class GameplayScreen : MonoBehaviour
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private ScoreUI scoreUI;
     [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private MovesManager movesManager;
 
     // Grid size configuration
     [SerializeField] private int gridRows = 2;
@@ -49,6 +50,11 @@ public class GameplayScreen : MonoBehaviour
             scoreManager.OnScoreChanged += scoreUI.UpdateScoreUI;
             scoreManager.OnComboChanged += scoreUI.UpdateComboUI;
         }
+        if (scoreUI != null && movesManager != null)
+        {
+            movesManager.OnMovesChanged += scoreUI.UpdateMovesUI;
+            movesManager.OnGameOverFromMoves += OnGameOverFromMoves;
+        }
         InitializeGame();
     }
 
@@ -69,6 +75,13 @@ public class GameplayScreen : MonoBehaviour
         var (columns, rows) = Services.GameService.GetGridSize();
         gridManager.InitializeGrid(rows, columns);
         gridManager.OnGameWon += OnGameWon;
+
+        // Initialize moves based on grid size
+        if (movesManager != null)
+        {
+            int moves = Services.GameService.GetMoves();
+            movesManager.InitializeMoves(moves);
+        }
 
         if (gameStatusText != null)
         {
@@ -103,6 +116,15 @@ public class GameplayScreen : MonoBehaviour
             gameStatusText.text = "You Won!";
         }
         Services.AudioService.PlayWinSound();
+    }
+
+    private void OnGameOverFromMoves()
+    {
+        if (gameStatusText != null)
+        {
+            gameStatusText.text = "Game Over! No moves left.";
+        }
+        Services.AudioService.PlayGameOverSound();
     }
 
     // private void RestartGame()
@@ -144,6 +166,11 @@ public class GameplayScreen : MonoBehaviour
         {
             scoreManager.OnScoreChanged -= scoreUI.UpdateScoreUI;
             scoreManager.OnComboChanged -= scoreUI.UpdateComboUI;
+        }
+        if (scoreUI != null && movesManager != null)
+        {
+            movesManager.OnMovesChanged -= scoreUI.UpdateMovesUI;
+            movesManager.OnGameOverFromMoves -= OnGameOverFromMoves;
         }
     }
 }

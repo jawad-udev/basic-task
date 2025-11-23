@@ -6,15 +6,7 @@ public class ScoreUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI comboText;
-
-    // public Action<int> OnScoreUpdated;
-    // public Action<int> OnComboUpdated;
-
-    // private void Start()
-    // {
-    //     OnScoreUpdated += UpdateScoreUI;
-    //     OnComboUpdated += UpdateComboUI;
-    // }
+    [SerializeField] private TextMeshProUGUI movesText;
 
     public void UpdateScoreUI(int score)
     {
@@ -41,9 +33,25 @@ public class ScoreUI : MonoBehaviour
         }
     }
 
-    // private void OnDestroy()
-    // {
-    //     OnScoreUpdated -= UpdateScoreUI;
-    //     OnComboUpdated -= UpdateComboUI;
-    // }
+    public void UpdateMovesUI(int movesRemaining)
+    {
+        if (movesText != null)
+        {
+            if (movesRemaining > 5)
+            {
+                movesText.text = $"Moves: {movesRemaining}";
+                movesText.color = Color.black;
+            }
+            else if (movesRemaining > 0)
+            {
+                movesText.text = $"Moves: {movesRemaining}";
+                movesText.color = Color.yellow;
+            }
+            else
+            {
+                movesText.text = "Moves: 0";
+                movesText.color = Color.red;
+            }
+        }
+    }
 }

@@ -9,6 +9,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Sprite cardBackSprite;
     [SerializeField] private List<Sprite> cardFrontSprites;
     [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private MovesManager movesManager;
     [SerializeField] private float spacingX = 10f;
     [SerializeField] private float spacingY = 10f;
 
@@ -24,6 +25,7 @@ public class GridManager : MonoBehaviour
     private bool isComparing = false;
 
     public System.Action OnGameWon { get; set; }
+    public System.Action OnGameOver { get; set; }
 
     public void InitializeGrid(int rows, int columns)
     {
@@ -144,11 +146,23 @@ public class GridManager : MonoBehaviour
             return;
         }
 
+        // Check if moves are available
+        if (movesManager != null && movesManager.IsGameOver)
+        {
+            return;
+        }
+
         selectedCards.Add(selectedCard);
 
         // Once 2 cards are selected, queue for comparison
         if (selectedCards.Count == 2)
         {
+            // Decrement moves when a pair is selected
+            if (movesManager != null)
+            {
+                movesManager.DecrementMoves();
+            }
+
             // Queue this pair for comparison
             List<Card> pairToCompare = new List<Card>(selectedCards);
             comparisonQueue.Enqueue(pairToCompare);
