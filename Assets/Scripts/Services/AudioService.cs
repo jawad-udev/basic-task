@@ -24,6 +24,7 @@ public class AudioService : MonoBehaviour
     [SerializeField] private AudioClip cardMissmatchSound;
     [SerializeField] private AudioClip winSound;
     [SerializeField] private AudioClip gameoverSound;
+    [SerializeField] private AudioClip cardFlipSound;
 
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource soundSource;
@@ -69,5 +70,10 @@ public class AudioService : MonoBehaviour
     public void PlayGameOverSound()
     {
         soundSource.PlayOneShot(gameoverSound);
+    }
+
+    public void PlayCardFlipSound()
+    {
+        soundSource.PlayOneShot(cardFlipSound);
     }
 }

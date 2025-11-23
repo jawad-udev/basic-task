@@ -93,7 +93,7 @@ public class Card : MonoBehaviour
 
         isFlipped = true;
         cardButton.interactable = false;
-
+        Services.AudioService.PlayCardFlipSound();
         // Y-axis rotation animation for flip effect
         transform.DORotate(new Vector3(0, 90, 0), flipDuration / 2)
             .OnComplete(() =>
@@ -119,7 +119,7 @@ public class Card : MonoBehaviour
         if (isMatched) return;
 
         cardButton.interactable = false;
-
+        Services.AudioService.PlayCardFlipSound();
         transform.DORotate(new Vector3(0, 90, 0), flipDuration / 2)
             .OnComplete(() =>
             {

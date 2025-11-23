@@ -1,6 +1,5 @@
-using System;
-using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 public class MainMenuScreen : MonoBehaviour
@@ -13,7 +12,6 @@ public class MainMenuScreen : MonoBehaviour
     {
         (2, 2),   // Easy
         (2, 3),   // Medium
-        (3, 3),   // Hard
         (3, 4),   // Expert
         (4, 4),   // Expert
         (4, 5),   // Expert
